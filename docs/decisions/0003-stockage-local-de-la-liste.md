@@ -42,6 +42,15 @@ Math utilise un **iPhone** et a accepté explicitement les deux conditions ci-de
 
 Pannes de stockage détectables et façon de les simuler en test (EPI-016) : voir `docs/architecture.md`, section « Pannes de stockage ».
 
+## Précision du 2026-10-19 : copies de secours des listes illisibles (EPI-017)
+Précision de détail, sans changer la décision ci-dessus. Math a validé que la copie reste **sur le téléphone**, sans récupération depuis l'app : elle sert seulement à ne rien détruire, pour qu'une réparation à la main reste possible.
+- **Une copie par incident, jamais écrasée.** Chaque copie porte sa propre clé numérotée : `epicerie.liste.illisible.1`, puis `.2`, etc. (au lieu d'une clé unique). Chaque copie contient le texte brut tel quel, plus la date de l'incident. L'app ne **supprime et ne remplace jamais** une copie.
+- **Plafond de 5 copies.** Une liste fait quelques Ko : 5 copies restent très en dessous du quota. Au-delà, l'app ne crée plus de copie (les 5 premières, les plus proches de la cause, sont gardées) et signale le cas par une erreur distincte. Cas jugé très improbable ; à reprendre si Math le rencontre.
+- **Pas de doublon.** Si le texte illisible est identique à une copie déjà gardée (par exemple Math rouvre l'app sans rien avoir enregistré entre-temps), aucune nouvelle copie n'est créée.
+- **Copie d'abord, remplacement ensuite.** L'app ne remplace la clé `epicerie.liste` (par une liste vide) qu'**après** avoir confirmé que la copie est bien écrite. Si la copie échoue (stockage plein), la donnée d'origine reste en place, l'erreur est signalée, et l'app n'enregistre rien tant que la situation n'est pas réglée.
+- Le message affiché à Math pour ce cas reste à décider par Jean-Marc et Jean-François. Cette règle est classée **réversible** (détail interne du dépôt `storage/`).
+- Tests attendus : deuxième incident avec un texte différent (les deux copies existent), même texte deux fois (une seule copie), plafond atteint (aucune copie supprimée), copie impossible (donnée d'origine intacte).
+
 ## Conséquences
 - Simple et fiable pour le volume prévu ; aucune bibliothèque ajoutée.
 - **Condition à communiquer à Math** : sur iPhone, l'app doit être **ajoutée à l'écran d'accueil** et utilisée de là ; utilisée seulement dans un onglet Safari, la liste pourrait être effacée après 7 jours sans visite.

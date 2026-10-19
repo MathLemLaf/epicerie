@@ -4,10 +4,12 @@ import { defineConfig } from "vitest/config";
 // Voir docs/decisions/0004-fonctionnement-hors-ligne.md :
 // le service worker met en cache toute l'app au premier chargement,
 // puis l'app s'ouvre sans réseau.
+// Voir docs/decisions/0007-application-des-mises-a-jour.md : mode "prompt" sans bouton,
+// la nouvelle version attend la fermeture complète de l'app, l'écran n'est jamais rechargé.
 export default defineConfig({
   plugins: [
     VitePWA({
-      registerType: "autoUpdate",
+      registerType: "prompt",
       includeAssets: ["icon.svg"],
       manifest: {
         name: "Ma liste d'épicerie",
