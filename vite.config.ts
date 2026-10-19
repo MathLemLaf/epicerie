@@ -33,7 +33,5 @@ export default defineConfig({
   test: {
     include: ["src/**/*.test.ts"],
     environment: "happy-dom",
-    // Squelette : aucun test unitaire tant que la première story n'est pas commencée.
-    passWithNoTests: true,
   },
 });

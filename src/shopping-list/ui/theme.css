@@ -1,0 +1,50 @@
+/*
+ * Tokens du design system (docs/ux/design-system.md), thème clair.
+ * Seul endroit où une couleur est écrite : les composants n'utilisent que ces variables.
+ * Le thème sombre (EPI-015) redéfinira les mêmes variables sous prefers-color-scheme: dark.
+ */
+:root {
+  --couleur-fond: #ffffff;
+  --couleur-texte: #1a1a1a;
+  --couleur-texte-secondaire: #595959;
+  --couleur-surface: #f2f2f2;
+  --couleur-primaire: #1b6e3c;
+  --couleur-texte-sur-primaire: #ffffff;
+  --couleur-bordure-champ: #767676;
+  --couleur-erreur: #b3261e;
+  --couleur-focus: #0b57d0;
+
+  --police: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --largeur-colonne: 560px;
+  --cible-tactile: 48px;
+  --hauteur-ligne: 56px;
+  --duree-deplacement: 150ms;
+  --rayon: 8px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--couleur-fond);
+  color: var(--couleur-texte);
+  font-family: var(--police);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
