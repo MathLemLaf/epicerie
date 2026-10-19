@@ -1,6 +1,6 @@
 # 0006 — Outillage de tests et de qualité
 
-- Statut : Acceptée (2026-10-19) — décision réversible, prise par l'architecte ; ne s'applique que si l'ADR 0002 est acceptée
+- Statut : Acceptée (2026-10-19) — décision réversible, prise par l'architecte ; condition levée : l'ADR 0002 est acceptée depuis le 2026-10-19
 - Date : 2026-10-19
 - Décideur : architecte (Charle)
 - Dépend de : 0002 (stack)
@@ -36,4 +36,4 @@ Conventions :
 ## Conséquences
 - Une commande par besoin, documentée dans le README.
 - Playwright télécharge ses navigateurs une fois (`npx playwright install chromium webkit`, environ 250 Mo).
-- WebKit dans Playwright n'est pas Safari sur iPhone : la vérification finale du hors ligne et de l'installation sur iPhone reste manuelle (Julie).
+- WebKit dans Playwright n'est pas Safari sur iPhone : la vérification finale du hors ligne et de l'installation sur iPhone reste manuelle (Julie). L'iPhone étant la cible principale (ADR 0001), le projet « iphone-safari » est le plus important des deux pour l'affichage et les parcours.

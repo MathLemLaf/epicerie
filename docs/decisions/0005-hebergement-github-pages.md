@@ -1,6 +1,6 @@
 # 0005 — Hébergement : GitHub Pages, déployé par GitHub Actions
 
-- Statut : Proposée
+- Statut : Acceptée (2026-10-19, validée par Math)
 - Date : 2026-10-19
 - Décideur : Math, sur recommandation de l'architecte (Charle)
 - Dépend de : 0001 (PWA), 0004 (hors ligne)
@@ -28,6 +28,7 @@ Faits vérifiés le 2026-10-19 : GitHub Pages est gratuit pour un **dépôt publ
 
 ## Conséquences
 - Coût nul, HTTPS automatique, mises à jour publiées sans geste manuel.
+- C'est à cette adresse que Math ouvre l'app **dans Safari sur son iPhone** pour l'ajouter à l'écran d'accueil (une seule fois).
 - Le code et la documentation produit sont lisibles par tous ; aucun secret ni donnée personnelle ne doit jamais y figurer (règle déjà en vigueur).
 - L'app étant servie dans un sous-dossier (`/epicerie/`), la configuration Vite devra déclarer ce chemin (`base`) au moment de la mise en place du déploiement.
 - Rien n'est publié tant que Math n'a pas donné son accord pour créer le dépôt distant et pousser (règle d'équipe).

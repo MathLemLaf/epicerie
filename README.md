@@ -3,7 +3,7 @@
 Liste d'achats pour téléphone, utilisable sans réseau. Application web installable (PWA), sans serveur : la liste reste sur le téléphone.
 
 - Produit : `docs/produit/` · UX : `docs/ux/` · Architecture : `docs/architecture.md` · Décisions : `docs/decisions/`
-- État : squelette seulement. Les ADR 0001 à 0005 attendent la validation de Math.
+- État : squelette seulement. ADR 0001 à 0007 acceptées. Cible principale : iPhone (Safari iOS, app installée).
 
 ## Installation
 
@@ -32,4 +32,6 @@ Une fois l'app publiée (ADR 0005), ouvrir son adresse :
 - **iPhone** : dans **Safari**, bouton Partager → « Sur l'écran d'accueil ». Toujours ouvrir l'app depuis cette icône : c'est ce qui protège la liste de l'effacement automatique de Safari.
 - **Android** : dans Chrome, menu → « Installer l'application ».
 
-Ouvrir l'app une première fois avec du réseau ; ensuite elle fonctionne en mode avion.
+Après l'installation, **ouvrir l'app une première fois depuis son icône, avec du réseau** (sur iPhone, l'app installée a son propre stockage, séparé de Safari). Ensuite elle fonctionne en mode avion.
+
+Les nouvelles versions s'appliquent à la prochaine ouverture après une fermeture complète de l'app, jamais en plein usage (ADR 0007).

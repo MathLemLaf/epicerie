@@ -1,6 +1,6 @@
 # 0004 — Fonctionnement hors ligne : service worker généré par vite-plugin-pwa
 
-- Statut : Proposée
+- Statut : Acceptée (2026-10-19, validée par Math) ; le point « Mises à jour » est remplacé par 0007
 - Date : 2026-10-19
 - Décideur : Math, sur recommandation de l'architecte (Charle)
 - Dépend de : 0001 (PWA), 0002 (stack), 0003 (stockage)
@@ -28,11 +28,13 @@ Versions vérifiées le 2026-10-19 (npm) : vite-plugin-pwa 2.0.0 (publié le 202
 - **vite-plugin-pwa** génère, à chaque build, le service worker et le manifeste d'installation (nom, icône, couleurs).
 - Stratégie : **tous les fichiers de l'app sont mis en cache à la première visite** (« precache »). Ensuite l'app s'ouvre depuis le téléphone, avec ou sans réseau.
 - Mises à jour : **automatiques** (`registerType: "autoUpdate"`) : quand Math ouvre l'app avec du réseau, la nouvelle version est téléchargée et s'applique au lancement suivant. Pas de bouton « Mettre à jour » à gérer pour le MVP.
+  **Ce point est remplacé par l'ADR 0007** (2026-10-19) : vérification faite, le mode `autoUpdate` recharge l'écran en plein usage, ce qui contredit l'intention ci-dessus. L'intention (téléchargement automatique, application au lancement suivant, pas de bouton) est conservée ; seul le réglage change.
 - L'app ne fait **aucun appel réseau** pour fonctionner. Le bandeau « Hors ligne » des wireframes n'est qu'une information (événements `online` / `offline` du navigateur).
 
 ## Conséquences
 - En mode avion, l'app s'ouvre et fonctionne entièrement, à condition d'avoir été ouverte **une fois avec du réseau** après chaque installation.
 - Le service worker n'est actif que dans la **version construite** (`npm run build`, puis `npm run preview` ou en ligne), pas avec `npm run dev`. Les tests hors ligne tournent donc sur la version construite.
 - Test automatisé : `e2e/coquille-hors-ligne.spec.ts` vérifie qu'après une première visite l'app s'ouvre en mode avion simulé (Chromium). Contre-épreuve faite le 2026-10-19 : le test échoue si le service worker est bloqué.
-- Limite connue : la simulation de mode avion fiable n'existe que sur Chromium (Android). Sur iPhone, Julie vérifie EPI-004 **à la main** sur un vrai téléphone en mode avion.
+- Limite connue : la simulation de mode avion fiable n'existe que sur Chromium (Android). Or la cible principale est l'**iPhone de Math** (Safari iOS, app installée) : la vérification d'EPI-004 sur un **vrai iPhone en mode avion** est donc obligatoire avant d'accepter la story (procédure : `docs/architecture.md`, section « Plateforme cible »).
+- Sur iPhone, l'app installée sur l'écran d'accueil a **son propre stockage, séparé de Safari** : la copie hors ligne doit être faite en **ouvrant une fois l'app depuis son icône, avec du réseau**, après l'installation.
 - Le site doit être servi en **HTTPS** (obligatoire pour un service worker) : couvert par l'hébergement (ADR 0005).

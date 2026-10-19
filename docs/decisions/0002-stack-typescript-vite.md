@@ -1,6 +1,6 @@
 # 0002 — Stack : TypeScript et Vite, sans framework d'interface
 
-- Statut : Proposée
+- Statut : Acceptée (2026-10-19, validée par Math)
 - Date : 2026-10-19
 - Décideur : Math, sur recommandation de l'architecte (Charle)
 - Dépend de : 0001 (PWA)

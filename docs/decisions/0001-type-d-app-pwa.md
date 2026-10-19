@@ -1,12 +1,14 @@
 # 0001 — Type d'app : application web installable (PWA)
 
-- Statut : Proposée
+- Statut : Acceptée (2026-10-19, validée par Math)
 - Date : 2026-10-19
 - Décideur : Math, sur recommandation de l'architecte (Charle)
 
 ## Contexte
 Math a validé : une seule personne l'utilise (lui), pas de partage ni de synchronisation, surtout sur téléphone, et **le fonctionnement hors ligne est obligatoire** (fond du magasin sans réseau). Le MVP couvre EPI-001 à EPI-005 : ajouter, cocher, retrouver sa liste à la réouverture, utiliser hors ligne, supprimer avec annulation.
 Il faut choisir la forme de l'app sur le téléphone. Le modèle de téléphone (iPhone ou Android) n'est pas encore connu ; hypothèse par défaut : iPhone.
+
+**Précision à l'acceptation (2026-10-19)** : Math a un **iPhone**. La plateforme cible principale est donc **Safari sur iOS, avec l'app installée sur l'écran d'accueil**. Android reste compatible (même code) mais secondaire. Particularités iOS : voir `docs/architecture.md`, section « Plateforme cible ».
 
 Une **PWA** (« Progressive Web App ») est un site web qu'on peut **ajouter à l'écran d'accueil** : il s'ouvre alors en plein écran avec sa propre icône, comme une vraie app, et peut fonctionner sans réseau. Il n'y a ni App Store ni Play Store à traverser.
 

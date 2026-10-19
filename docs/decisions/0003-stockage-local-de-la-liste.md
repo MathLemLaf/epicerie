@@ -1,6 +1,6 @@
 # 0003 — Stockage de la liste sur le téléphone (localStorage)
 
-- Statut : Proposée
+- Statut : Acceptée (2026-10-19, validée par Math)
 - Date : 2026-10-19
 - Décideur : Math, sur recommandation de l'architecte (Charle)
 - Dépend de : 0001 (PWA), 0002 (stack)
@@ -34,6 +34,13 @@ Fait vérifié (WebKit, page « Tracking Prevention », 2026-10-19) : Safari eff
 - Un échec d'enregistrement (stockage plein ou indisponible) est remonté comme une erreur explicite du dépôt, que l'écran peut afficher (écran 9 des wireframes, à trancher par Jean-Marc).
 - Une donnée illisible au chargement (JSON corrompu, version inconnue) ne doit **jamais** être écrasée silencieusement : elle est conservée telle quelle et l'erreur est signalée.
 - Au démarrage, l'app demande au navigateur un stockage **persistant** (`navigator.storage.persist()`), une protection supplémentaire, sans garantie sur tous les navigateurs.
+
+## Conditions acceptées par Math (2026-10-19)
+Math utilise un **iPhone** et a accepté explicitement les deux conditions ci-dessous :
+1. l'app est **ajoutée à l'écran d'accueil** et **ouverte depuis son icône** (pas depuis un onglet Safari) ;
+2. la liste n'est **sauvegardée nulle part ailleurs** que sur le téléphone.
+
+Pannes de stockage détectables et façon de les simuler en test (EPI-016) : voir `docs/architecture.md`, section « Pannes de stockage ».
 
 ## Conséquences
 - Simple et fiable pour le volume prévu ; aucune bibliothèque ajoutée.
