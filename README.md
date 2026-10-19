@@ -25,11 +25,18 @@ npx playwright install chromium webkit   # une fois, pour les tests de bout en b
 | Formater et corriger le style | `npm run format` |
 | Construire la version à publier (`dist/`) | `npm run build` |
 | Essayer la version construite (avec hors ligne) | `npm run preview` |
+| Construire et essayer la version GitHub Pages (servie sous `/epicerie/`) | `npm run build:pages` puis `npm run preview:pages` |
+
+## Publication (GitHub Pages)
+
+- Adresse attendue : **https://mathlemlaf.github.io/epicerie/**
+- Le workflow `.github/workflows/deploy-pages.yml` publie à chaque mise à jour de `main` : `npm run check` (types, lint, tests unitaires), puis `npm run build:pages`, puis publication. Si une vérification échoue, rien n'est publié.
+- Le build Pages sert l'app sous le sous-chemin `/epicerie/` (option `--base` de Vite). `npm run dev`, `npm run build` et les tests de bout en bout restent à la racine `/`.
 
 ## Installer sur le téléphone
 
 Une fois l'app publiée (ADR 0005), ouvrir son adresse :
-- **iPhone** : dans **Safari**, bouton Partager → « Sur l'écran d'accueil ». Toujours ouvrir l'app depuis cette icône : c'est ce qui protège la liste de l'effacement automatique de Safari.
+- **iPhone** : dans **Safari**, ouvrir https://mathlemlaf.github.io/epicerie/, bouton Partager → « Sur l'écran d'accueil ». Laisser **« Ouvrir en tant qu'app web »** activé, puis toucher « Ajouter ». Toujours ouvrir l'app depuis cette icône : c'est ce qui protège la liste de l'effacement automatique de Safari.
 - **Android** : dans Chrome, menu → « Installer l'application ».
 
 Après l'installation, **ouvrir l'app une première fois depuis son icône, avec du réseau** (sur iPhone, l'app installée a son propre stockage, séparé de Safari). Ensuite elle fonctionne en mode avion.

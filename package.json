@@ -10,7 +10,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "build:pages": "tsc --noEmit && vite build --base=/epicerie/",
     "preview": "vite preview",
+    "preview:pages": "vite preview --base=/epicerie/",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
