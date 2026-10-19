@@ -3,7 +3,7 @@
 Liste d'achats pour téléphone, utilisable sans réseau. Application web installable (PWA), sans serveur : la liste reste sur le téléphone.
 
 - Produit : `docs/produit/` · UX : `docs/ux/` · Architecture : `docs/architecture.md` · Décisions : `docs/decisions/`
-- État : squelette seulement. ADR 0001 à 0007 acceptées. Cible principale : iPhone (Safari iOS, app installée).
+- État : EPI-001 (ajouter un article) livrée et validée par la QA, hors tests sur iPhone réel ; EPI-002 (cocher un article) livrée, en attente de validation QA. La liste n'est pas encore conservée à la fermeture (EPI-003). ADR 0001 à 0007 acceptées. Cible principale : iPhone (Safari iOS, app installée).
 
 ## Installation
 

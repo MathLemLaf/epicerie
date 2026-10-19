@@ -5,7 +5,7 @@ Dernière mise à jour : 2026-10-19 — Jean-Marc (PO).
 
 ## Ce que Math a dit
 « Une petite application pour gérer ma liste d'épicerie », sur téléphone, **utilisable hors ligne** (obligatoire), pour lui seul.
-Décisions validées : tutoiement dans l'interface ; champ d'ajout en bas avec clavier ouvert à l'ouverture ; bandeau « Hors ligne. Ta liste fonctionne normalement. » ; suppression sans confirmation avec « Annuler » pendant 5 s (un seul message à la fois) ; deux sections « À prendre » et « Dans le panier » ; thème sombre automatique ; retrait d'un coup des articles cochés dans le MVP ; pas de blocage de la frappe à 100 caractères.
+Décisions validées : tutoiement dans l'interface ; champ d'ajout en bas (clavier ouvert à l'ouverture : impossible sur iPhone, remplacé par « un seul toucher » — **compromis proposé, à valider**, voir EPI-001) ; bandeau « Hors ligne. Ta liste fonctionne normalement. » ; suppression et retrait sans confirmation avec « Annuler » pendant 5 s partout (un seul message à la fois, seule la dernière action est annulable) ; plateforme : iPhone, app installée sur l'écran d'accueil ; deux sections « À prendre » et « Dans le panier » ; article coché en tête de « Dans le panier », article décoché à la fin de « À prendre » ; thème sombre automatique ; retrait d'un coup des articles cochés dans le MVP, immédiat, sans confirmation, avec « Annuler » pendant 5 s comme la suppression ; être prévenu si la liste ne peut pas être enregistrée (EPI-016) ; pas de blocage de la frappe à 100 caractères.
 Ce qui n'est pas dans cette liste est une **proposition** ou une **hypothèse**.
 
 ## Énoncé de vision
@@ -35,11 +35,12 @@ Le bénéfice clé est « noter vite, ne rien oublier au magasin ».
 - Ajouter un article (nom en texte libre, 1 à 100 caractères) — `EPI-001`
 - Cocher / décocher un article acheté — `EPI-002`
 - Retrouver sa liste à la réouverture de l'app — `EPI-003`
-- Consulter et modifier sa liste sans connexion internet — `EPI-004`
+- Consulter et modifier sa liste sans connexion internet — `EPI-004` ; mises à jour sans risque pour la liste — `EPI-004b` *(découpage d'EPI-004)*
 - Supprimer un article, avec annulation de 5 s — `EPI-005`
-- Retirer d'un coup les articles cochés — `EPI-006` *(remontée par Math)*
+- Retirer d'un coup les articles cochés, avec « Annuler » pendant 5 s — `EPI-006` *(remontée par Math)*
 - Thème sombre automatique selon le téléphone — `EPI-015` *(voulu par Math ; il ne sert pas directement le bénéfice clé, mais il est dans le MVP à sa demande)*
-- Être prévenu si la liste ne peut pas être enregistrée — `EPI-016` *(proposé par Jean-Marc pour tenir « zéro article perdu » ; en attente de l'accord de Math)*
+- Être prévenu si la liste ne peut pas être enregistrée — `EPI-016` *(proposé par Jean-Marc pour tenir « zéro article perdu » ; validé par Math le 2026-10-19)*
+- Être prévenu si la liste enregistrée est illisible à l'ouverture — `EPI-017` *(proposé par Jean-Marc, **à valider par Math**)*
 
 ## Hors périmètre pour l'instant
 - **Partage et synchronisation** entre plusieurs personnes ou appareils. *(Won't — à revoir si Math fait l'épicerie à plusieurs)*
@@ -59,4 +60,4 @@ Le bénéfice clé est « noter vite, ne rien oublier au magasin ».
 | H4 | Le nom de l'article suffit ; la quantité peut s'écrire dans le nom (« lait 2 L x2 »). | Math se plaint-il de l'absence d'un champ quantité ? |
 | H5 | Le réseau est parfois absent au magasin, donc l'app doit fonctionner hors ligne. | Observation au magasin habituel (Math a déjà fait du hors ligne une obligation). |
 | H6 | Interface en français québécois (« épicerie », « article »), tutoiement. | Tutoiement confirmé par Math ; le reste du vocabulaire reste une hypothèse. |
-| H-A | Un article coché va en **tête** de « Dans le panier » ; un article décoché retourne à la **fin** de « À prendre ». | À valider par Math, ajustable après usage. |
+| H-A | Un article coché va en **tête** de « Dans le panier » ; un article décoché retourne à la **fin** de « À prendre ». | **Validée par Math (2026-10-19)** ; à réévaluer à l'usage si ça gêne. |
