@@ -197,7 +197,7 @@ Avant l'erreur : le compteur « 85 / 100 » apparaît dès 80 caractères (prév
 | [____________________] [ Ajouter ]   |
 +--------------------------------------+
 ```
-La section « À prendre » disparaît quand elle est vide ; le message (`role="status"`) la remplace. Le bouton de retrait (EPI-006) est le prolongement naturel de cet écran : tout est pris, on repart à zéro.
+La section « À prendre » disparaît quand elle est vide ; le message la remplace. Décision du 2026-10-19 (validée par Math) : le message est **statique** (pas de `role="status"` propre) ; l'annonce passe par la zone d'annonces commune, en une phrase : « « beurre » mis dans le panier. Tout est dans ton panier ! Il ne reste rien à prendre. ». Typographie : « Tout est dans ton panier ! » en gras, « Il ne reste rien à prendre. » en texte normal (voir design-system.md). Le bouton de retrait (EPI-006) est le prolongement naturel de cet écran : tout est pris, on repart à zéro.
 
 ## Écran 8 — Hors ligne — EPI-004
 

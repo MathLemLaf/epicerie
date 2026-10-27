@@ -1,7 +1,13 @@
 # Backlog — Ma liste d'épicerie (préfixe `EPI`)
 
 Statut du backlog : **MVP validé par Math** (EPI-001 à EPI-006, EPI-004b, EPI-015 thème sombre, EPI-016 échec d'enregistrement, EPI-017 liste illisible en Must), avec ses ajustements iPhone (un toucher dans la barre d'ajout ouvre le clavier, règle d'installation dans le README, découpage EPI-004/004b, copie de secours sans récupération dans l'app).
-Dernière mise à jour : 2026-10-19 — Jean-Marc (PO) : décisions de Math sur EPI-001 intégrées (cycle de statuts validé, collage multiligne hors MVP, pas de texte de confirmation, tests iPhone par fiche), idée EPI-018, dette EPI-019 (issue de BUG-002).
+Dernière mise à jour : 2026-10-19 — Jean-Marc (PO) : EPI-002 passe à « Livrée, en QA » ; nouvelle story EPI-020 (icône d'écran d'accueil) ; état d'avancement ajouté (site publié pour les tests iPhone) ; annonce « tout est pris » précisée dans EPI-002 (décision de Math).
+
+## État d'avancement (2026-10-19)
+- **Site publié** pour les tests iPhone de Math : https://mathlemlaf.github.io/epicerie/ (GitHub Pages, dépôt public `MathLemLaf/epicerie`). C'est un site de test : il ne contient que EPI-001 et EPI-002, et **la liste n'est pas conservée à la fermeture** (EPI-003 pas faite). Ne pas y compter pour un usage réel.
+- **EPI-001** : Livrée, en QA (attend les tests iPhone par fiche).
+- **EPI-002** : Livrée, en QA (tests automatisés verts ; QA de Julie en cours ; relecture de l'interface par Jean-François ; tests iPhone par fiche à venir).
+- **Avant un déploiement durable** (l'app que Math utilise vraiment au magasin) : EPI-003 (conserver la liste), EPI-004b (mises à jour sans risque pour la liste, déjà exigée « avant le premier déploiement public »), EPI-020 (icônes PNG d'écran d'accueil). Sans EPI-003, une fermeture de l'app efface la liste.
 
 ## Cycle de statuts (validé par Math)
 `À faire` → `Prête` → `En développement` → `Livrée, en QA` → `Validée QA` → `Acceptée`
@@ -28,7 +34,7 @@ UX : [parcours](../ux/parcours.md) · [wireframes](../ux/wireframes.md) · [desi
 | Rang | ID | Titre | Épopée | Priorité | Statut |
 |---|---|---|---|---|---|
 | 1 | EPI-001 | Ajouter un article à ma liste | Construire ma liste | Must (MVP) | **Livrée, en QA** (attend les tests iPhone) |
-| 2 | EPI-002 | Cocher un article mis dans le panier | Faire l'épicerie | Must (MVP) | **Prête** |
+| 2 | EPI-002 | Cocher un article mis dans le panier | Faire l'épicerie | Must (MVP) | **Livrée, en QA** (tests automatisés verts ; QA de Julie en cours ; tests iPhone par fiche à venir) |
 | 3 | EPI-003 | Retrouver ma liste à la réouverture | Construire ma liste | Must (MVP) | **Prête** |
 | 4 | EPI-016 | Ne jamais perdre un article en silence (échec d'enregistrement) | Construire ma liste | Must (MVP) | **Prête** |
 | 5 | EPI-017 | Être prévenu quand ma liste enregistrée est illisible | Construire ma liste | Must (MVP) — validée par Math | **Prête** |
@@ -37,6 +43,7 @@ UX : [parcours](../ux/parcours.md) · [wireframes](../ux/wireframes.md) · [desi
 | 8 | EPI-015 | Thème sombre automatique | Construire ma liste | Must (MVP, voulu par Math) | **Prête** |
 | 9 | EPI-004 | Utiliser ma liste sans connexion | Faire l'épicerie | Must (MVP) | **Prête** |
 | 10 | EPI-004b | Mises à jour sans risque pour ma liste | Faire l'épicerie | Must (MVP) — avant le premier déploiement public | **Prête** |
+| 10b | EPI-020 | Une icône reconnaissable sur l'écran d'accueil de l'iPhone | Faire l'épicerie | Should — à faire avant le déploiement durable | À faire (attend la spécification de Jean-François) |
 | 11 | EPI-007 | Indiquer une quantité | Construire ma liste | Should | À faire |
 | 12 | EPI-008 | Corriger le nom d'un article | Construire ma liste | Should | À faire |
 | 13 | EPI-009 | Être averti d'un article en double | Construire ma liste | Could | À faire |
@@ -718,7 +725,8 @@ Au magasin, voir d'un coup d'œil ce qui reste à prendre.
 ## EPI-002 — Cocher un article mis dans le panier
 - Épopée : Faire l'épicerie
 - Priorité : Must (MVP)
-- Statut : **Prête**
+- Statut : **Livrée, en QA** (2026-10-19) — tests automatisés verts ; QA de Julie en cours ; relecture de l'interface par Jean-François ; tests iPhone par fiche à venir (Math la remplira, Julie interprète).
+- Décision de Math (2026-10-19) : le message « Tout est dans ton panier ! Il ne reste rien à prendre. » est **visible à l'écran** et **annoncé par la zone d'annonce commune** de l'app, plutôt que par un `role="status"` dédié. Le critère exige l'annonce, pas un mécanisme ; si le code actuel diffère, Pierrick ajuste.
 - Story : En tant que personne qui fait l'épicerie, je veux cocher un article quand je le mets dans mon panier afin de voir d'un coup d'œil ce qu'il me reste à prendre.
 - Règles :
   - Deux sections : « À prendre (N) » puis « Dans le panier (N) ». Une section vide est masquée.
@@ -755,7 +763,8 @@ Au magasin, voir d'un coup d'œil ce qui reste à prendre.
     Étant donné que ma liste contient « pain » et « lait »
     Quand je les coche tous les deux
     Alors la section « À prendre » disparaît
-    Et « Tout est dans ton panier ! Il ne reste rien à prendre. » s'affiche et est annoncé
+    Et « Tout est dans ton panier ! Il ne reste rien à prendre. » s'affiche (visible à l'écran)
+    Et ce message est annoncé par un lecteur d'écran via la zone d'annonce commune de l'app (pas de role="status" propre à ce message)
     Et « Dans le panier (2) » liste les deux articles
 
   Scénario : tout est pris n'est pas la liste vide
@@ -881,6 +890,46 @@ Au magasin, voir d'un coup d'œil ce qui reste à prendre.
     Alors tous les articles, leur état et leur ordre sont conservés (test de migration)
   ```
 - Dépendances : EPI-004 (hors ligne). Technique : réglage `prompt` de la mise à jour (ADR 0007). Test automatisé lourd (deux versions construites) ; la vérification sur iPhone est manuelle (Julie). Voir aussi EPI-017 pour un format inconnu.
+
+## EPI-020 — Une icône reconnaissable sur l'écran d'accueil de l'iPhone
+- Épopée : Faire l'épicerie
+- Priorité : **Should**, mais **à faire avant le déploiement durable** (position de PO, à valider par Math). Pourquoi pas Must : sans icône, le bénéfice clé (noter vite, ne rien oublier) existe quand même. Pourquoi avant le déploiement : l'usage principal est l'app ajoutée à l'écran d'accueil (ADR 0001) ; sans icône PNG, l'iPhone affiche une miniature de la page à la place, et Math a du mal à retrouver l'app au magasin. Effort petit, risque nul : c'est du polish, mais du polish à l'endroit où Math touche l'app chaque jour.
+- Statut : **À faire** — manque pour la DoR : (1) le dessin et la spécification de l'icône par Jean-François (en cours) ; (2) la liste exacte des fichiers et des tailles confirmée par Charle (signalé : `apple-touch-icon` PNG 180×180, icônes PNG 192×192 et 512×512 pour le manifeste ; les SVG actuels ne sont pas utilisés par l'écran d'accueil iPhone). Pas de décision d'architecture ouverte à ce stade.
+- Story : En tant que personne qui fait l'épicerie avec l'app installée sur son iPhone, je veux une icône reconnaissable et un nom lisible sur mon écran d'accueil afin de retrouver et d'ouvrir ma liste d'un coup d'œil.
+- Critères d'acceptation :
+  ```
+  Scénario : icône sur l'écran d'accueil
+    Étant donné que j'ajoute l'app à l'écran d'accueil de l'iPhone depuis Safari
+    Alors l'icône affichée est le dessin de l'app (pas une miniature de la page ni une lettre générique)
+    Et elle est nette, sans flou ni bords coupés, et se distingue des autres icônes voisines (vérifié à la main par Julie sur l'iPhone)
+
+  Scénario : formats fournis
+    Alors une icône PNG 180×180 est déclarée pour l'écran d'accueil iPhone
+    Et des icônes PNG 192×192 et 512×512 sont déclarées dans le manifeste
+    Et ces fichiers existent à l'adresse publiée, y compris sous le sous-chemin du site (/epicerie/), et répondent sans erreur (test automatisé)
+
+  Scénario : icône pleine, sans transparence
+    Alors l'icône PNG a un fond plein, sans zone transparente (iOS remplirait la transparence en noir)
+    Et le dessin reste entièrement visible dans les coins arrondis imposés par iOS
+
+  Scénario : nom sous l'icône
+    Alors le nom sous l'icône est « Épicerie » (hypothèse, à confirmer par Jean-François et Math), sans troncature « … » sur l'iPhone
+    Et le nom complet « Ma liste d'épicerie » reste celui du manifeste et du titre de la page
+
+  Scénario : cohérence avec les thèmes
+    Étant donné que l'iPhone est en mode clair, puis en mode sombre
+    Alors l'icône reste reconnaissable et lisible dans les deux cas
+    Et ses couleurs sont cohérentes avec design-system.md (theme-color #FFFFFF / #121212 inchangés)
+
+  Scénario : installation de bout en bout
+    Étant donné une installation neuve de l'app (ancienne icône supprimée de l'écran d'accueil)
+    Quand j'ajoute l'app à l'écran d'accueil puis je l'ouvre depuis son icône
+    Alors l'app s'ouvre en plein écran, avec la liste, comme avant ; l'ajout de l'icône ne change aucun autre comportement
+
+  Scénario : exigences d'accessibilité
+    Alors accessibilite.md §A est respectée et le nom sous l'icône est celui lu par VoiceOver sur l'écran d'accueil
+  ```
+- Dépendances : EPI-001 (app publiée). Spécification : Jean-François. Fichiers et déclaration : Charle puis Pierrick. Vérification sur iPhone : Julie (nouvelle fiche, ou ajout à la fiche d'installation). Note : iOS met l'icône en cache à l'ajout ; un test exige de supprimer l'ancienne icône avant d'ajouter la nouvelle.
 
 ## EPI-006 — Retirer d'un coup les articles cochés
 - Épopée : Faire l'épicerie
@@ -1038,7 +1087,7 @@ Les ADR 0001 à 0007 sont toutes « Acceptée » (ADR 0003 précisé le 2026-10-
 | Parcours et écrans (Jean-François) | Oui (barre d'ajout touchable, écrans 3, 4) | Oui (écrans 2, 7) | Oui (écran 1) | Oui (écran 9, parcours 4) | Oui (écrans 11 et 11b, parcours 5, §B) | Oui (écran 6) | Oui (écran 10, parcours 3) | Oui (design-system.md, §B) | Oui (écran 8) | Sans objet (aucune interface) |
 | Aucune décision d'architecture ouverte | Oui (ADR 0002, 0003) | Oui | Oui (ADR 0003) | Oui (`architecture.md`) | Oui (ADR 0003, copies de secours) | Oui | Oui | Oui (variables CSS confirmées) | Oui (ADR 0004, 0007) | Oui (ADR 0007) |
 | Assez petite (quelques jours) | Oui | Oui | Oui | Oui (à surveiller : touche toutes les actions) | Oui (à surveiller : chargement + copies + avis ; découper si plus de quelques jours) | Oui | Oui | Oui | Oui (après découpage) | Oui (test lourd à deux versions) |
-| Statut | **Livrée, en QA** (était Prête) | **Prête** | **Prête** | **Prête** | **Prête** | **Prête** | **Prête** | **Prête** | **Prête** | **Prête** |
+| Statut | **Livrée, en QA** (était Prête) | **Livrée, en QA** (était Prête) | **Prête** | **Prête** | **Prête** | **Prête** | **Prête** | **Prête** | **Prête** | **Prête** |
 
 **Points de suivi (ne bloquent pas la DoR)**
 - **EPI-016** — textes « stockage plein », « accès refusé » et « repli » livrés et intégrés aux critères (décision de Math du 2026-10-19). Plus de point ouvert.

@@ -13,8 +13,10 @@ Statut : **Proposé** — Jean-François, 2026-10-19. Indépendant du framework 
 | `couleur-texte-secondaire` | `#595959` | Compteur, articles cochés, infos | 7,0:1 sur fond |
 | `couleur-surface` | `#F2F2F2` | Ligne cochée, bandeau hors ligne | texte principal 15,6:1 ; texte secondaire 6,3:1 |
 | `couleur-primaire` | `#1B6E3C` | Bouton Ajouter, case cochée | 6,3:1 sur fond ; texte blanc sur primaire 6,3:1 |
+| `couleur-texte-sur-primaire` | `#FFFFFF` | Texte du bouton Ajouter, coche de la case cochée, coche de la pastille « tout est pris » (tout ce qui est posé sur `couleur-primaire`) | 6,3:1 sur `couleur-primaire` |
+| `couleur-separateur` | `#DCDCDC` | Filet de 1 px entre deux lignes d'article (cochées ou non) | décoratif : ≈ 1,4:1 sur fond, volontairement discret (rien ne dépend de lui pour comprendre la liste) |
 | `couleur-bordure-champ` | `#767676` | Contour du champ, case vide | 4,5:1 sur fond (≥ 3:1 requis) |
-| `couleur-erreur` | `#B3261E` | Texte d'erreur, contour de champ en erreur | 6,5:1 sur fond |
+| `couleur-erreur` | `#B3261E` | Texte d'erreur, contour de champ en erreur | 6,5:1 sur fond ; 5,8:1 sur `couleur-surface` (le message d'erreur du champ est posé sur la barre d'ajout, fond surface) |
 | `couleur-focus` | `#0B57D0` | Anneau de focus (2 px, décalage 2 px) | 6,4:1 sur fond |
 | `couleur-message-fond` | `#2B2B2B` | Message flottant d'annulation | texte blanc 14,2:1 |
 | `couleur-message-action` | `#A8C7FA` | Bouton « Annuler » du message | 8,2:1 sur `couleur-message-fond` |
@@ -27,7 +29,9 @@ Statut : **Proposé** — Jean-François, 2026-10-19. Indépendant du framework 
 | `couleur-surface` | `#1E1E1E` | — |
 | `couleur-texte` | `#EDEDED` | 16,0:1 |
 | `couleur-texte-secondaire` | `#B0B0B0` | 8,6:1 sur fond ; 7,7:1 sur surface |
-| `couleur-primaire` | `#6FCF97` (texte du bouton : `#121212`) | 9,8:1 |
+| `couleur-primaire` | `#6FCF97` | 9,8:1 |
+| `couleur-texte-sur-primaire` | `#121212` | 9,8:1 sur `couleur-primaire` (texte du bouton, coche des cases cochées et de la pastille) |
+| `couleur-separateur` | `#3A3A3A` | décoratif : ≈ 1,6:1 sur fond, ≈ 1,3:1 sur surface |
 | `couleur-bordure-champ` | `#8A8A8A` | 5,4:1 sur fond ; 4,8:1 sur surface |
 | `couleur-erreur` | `#F2B8B5` | 11,0:1 |
 | `couleur-focus` | `#8AB4F8` | 8,9:1 |
@@ -89,7 +93,8 @@ Plein (`couleur-primaire`, texte blanc), 48 px de haut. États : normal ; survol
 Étiquette visible au-dessus (14 px, `couleur-texte`), champ 48 px, bordure 1 px `couleur-bordure-champ`. États : normal ; focus (bordure 2 px + anneau de focus) ; erreur (bordure 2 px `couleur-erreur` + message en dessous avec icône « ! » + `aria-invalid="true"` + `aria-describedby`) ; compteur dès 80 caractères. Attributs : `autocomplete="off"`, `enterkeyhint="done"` ou « ajouter », correction automatique selon le navigateur, pas de `maxlength` bloquant.
 
 ### Ligne d'article
-Structure : case (48 px) · nom (flexible, 18 px) · bouton Supprimer (48 px). Séparateur 1 px `couleur-surface` entre lignes.
+Structure : case (48 px) · nom (flexible, 18 px) · bouton Supprimer (48 px). Séparateur : filet de 1 px `couleur-separateur` sous chaque ligne (le même sur fond blanc et sur la ligne cochée à fond `couleur-surface`, où l'ancien filet `couleur-surface` était invisible ; décision du 2026-10-19). Il est décoratif (WCAG 1.4.11 ne l'exige pas : chaque ligne a sa case, son texte et sa hauteur de 56 px).
+- Le survol (fond `couleur-surface`) n'existe que pour un pointeur précis : `@media (hover: hover)`. Sur iPhone, un `:hover` « collant » après un toucher serait pris pour un état sélectionné. Même règle pour l'assombrissement du bouton Ajouter.
 - Non cochée : case vide (contour `couleur-bordure-champ`, 24 px dans une zone de 48 px), texte `couleur-texte`.
 - Cochée : case pleine `couleur-primaire` avec coche blanche, texte `couleur-texte-secondaire` **barré**, fond `couleur-surface`.
 - Focus : anneau visible autour de la ligne ou de la case. Survol : fond `couleur-surface`.
@@ -122,6 +127,31 @@ Fond `couleur-surface`, icône + texte, sous le titre. Neutre, pas rouge (ce n'e
 
 ### État vide / « Tout est pris »
 Icône décorative (`aria-hidden`), phrase courte, indication de l'action suivante.
+
+**« Tout est pris »** (EPI-002) : pastille ronde de 32 px `couleur-primaire` avec coche `couleur-texte-sur-primaire` (décorative), puis deux phrases : « Tout est dans ton panier ! » en 18 px / 700, et « Il ne reste rien à prendre. » en 16 px / 400, `couleur-texte` (hiérarchie : une idée forte, une précision). Le message est statique et **n'est pas une zone `aria-live`** : l'annonce passe par la zone d'annonces commune de l'écran (un seul `role="status"` pour l'ajout, le cochage et « tout est pris »), en une seule phrase concaténée : « « pain » mis dans le panier. Tout est dans ton panier ! Il ne reste rien à prendre. ». Il disparaît dès qu'un article est à prendre.
+
+**Zone d'annonces commune** : l'annonce doit être relue même si le texte est identique à la précédente (ex. ajouter deux fois « lait ») : vider la zone puis réécrire le texte au tour suivant, sinon VoiceOver peut ne rien dire la seconde fois.
+
+## Icône de l'app (écran d'accueil, manifeste)
+
+Identité originale : un **panier blanc coché sur fond vert `#1B6E3C`** (= `couleur-primaire` clair ; le vert de l'épicerie et du « fait », même vert que la case cochée et le bouton Ajouter). Anse en arc, corps trapézoïdal aux coins adoucis, coche verte découpée dans le corps. Aucun texte (illisible à petite taille, rien à traduire), aucun dégradé, aucun logo existant. Blanc sur vert : 6,3:1.
+
+**Une seule version pour les deux thèmes** : le fond vert opaque se lit sur un fond d'écran clair comme sombre ; iOS ignore le thème pour les icônes de pages web (une variante sombre / teintée : non vérifié, hors périmètre).
+
+| Fichier à produire (PNG) | Taille | Source SVG | Particularités |
+|---|---|---|---|
+| `public/apple-touch-icon.png` | 180 × 180 | `docs/ux/icones/icone-plein-cadre.svg` | **Plein cadre, sans transparence (pas de canal alpha), sans coins arrondis** : iOS applique son propre masque. Si le PNG a de la transparence, iOS la remplit de noir. |
+| `public/pwa-192x192.png` | 192 × 192 | `icone-coins-arrondis.svg` | Purpose `any`. Coins transparents. |
+| `public/pwa-512x512.png` | 512 × 512 | `icone-coins-arrondis.svg` | Purpose `any`. Coins transparents. |
+| `public/pwa-maskable-512x512.png` | 512 × 512 | `icone-plein-cadre.svg` | Purpose `maskable`. Plein cadre ; le motif tient dans le cercle de sécurité (80 % central), déjà respecté par le SVG. |
+| `public/icon.svg` (remplace l'icône provisoire `#2e7d32`) | vectoriel | `icone-coins-arrondis.svg` | Favicon d'onglet. |
+
+**Balises et manifeste** (à faire par Pierrick) :
+- `index.html` : `<link rel="apple-touch-icon" href="/apple-touch-icon.png">` (Vite ajoute le préfixe `/epicerie/` ; pas de `sizes` nécessaire pour un seul fichier) ; `<meta name="apple-mobile-web-app-title" content="Épicerie">` (sinon iOS affiche « Ma liste d'épicerie », coupé sous l'icône) ; garder `<link rel="icon" href="/icon.svg" type="image/svg+xml">`.
+- Manifeste (`vite.config.ts`) : `icons` = `pwa-192x192.png` (192x192, image/png, `any`), `pwa-512x512.png` (512x512, image/png, `any`), `pwa-maskable-512x512.png` (512x512, image/png, `maskable`) + l'entrée SVG existante (`sizes: "any"`). Ne pas mettre `any maskable` sur un même fichier. Ajouter les PNG et `apple-touch-icon.png` à `includeAssets` pour qu'ils soient dans le cache hors ligne.
+- Les PNG sont **générés une fois depuis les SVG et versionnés** (pas de génération à chaque build). Outil au choix de Pierrick (ex. export `sharp` ou `resvg`, ou `@vite-pwa/assets-generator`) ; si une dépendance de développement est ajoutée, le dire à Charle. Contrôler : `file apple-touch-icon.png` doit dire « RGB » et non « RGBA ».
+- **Pour Math** : iOS copie l'icône au moment de « Sur l'écran d'accueil ». Pour voir la nouvelle, supprimer l'app de l'écran d'accueil et la rajouter depuis Safari.
+- Je n'ai pas d'outil de rendu : **je n'ai pas produit les PNG ni vu le rendu des SVG** (formes calculées à la main, motif centré et contenu dans le cercle de sécurité par calcul). À regarder à l'écran avant de figer.
 
 ## Mouvement
 Aucune animation nécessaire. Si le déplacement d'un article coché est animé, l'animation dure ≤ 200 ms, sans clignotement, et est **supprimée** avec `prefers-reduced-motion: reduce`.

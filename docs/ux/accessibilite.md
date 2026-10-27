@@ -39,7 +39,10 @@ Statut : **Proposé** — à intégrer par Jean-Marc aux critères d'acceptation
 - Toute la ligne (sauf Supprimer) est une cible de cochage d'au moins 48 px de haut.
 - Coché = case pleine avec coche **et** texte barré **et** regroupé sous « Dans le panier » ; vérifié en niveaux de gris.
 - Chaque cochage / décochage est annoncé (« « pain » mis dans le panier. »).
-- Quand tout est pris, le message « Tout est dans ton panier ! » est affiché et annoncé.
+- Quand tout est pris, le message « Tout est dans ton panier ! Il ne reste rien à prendre. » est affiché et annoncé **dans la même annonce que le cochage** (zone d'annonces commune, une seule lecture : « « pain » mis dans le panier. Tout est dans ton panier ! Il ne reste rien à prendre. »). Le message affiché n'est pas lui-même une zone `aria-live`.
+- Une annonce identique à la précédente est relue (ex. ajouter deux fois le même article) : la zone est vidée avant d'être réécrite.
+- Le focus suit l'article déplacé pour la navigation au clavier ou au lecteur d'écran ; au toucher, la liste ne saute pas (le défilement ne bouge pas à cause du déplacement du focus). Si le clavier virtuel était ouvert, il se ferme au cochage (voulu).
+- Les listes gardent leur sémantique de liste dans Safari/VoiceOver malgré `list-style: none` (`role="list"`).
 
 **EPI-003 Conservation**
 - Liste vide : message « Ta liste est vide. Écris ton premier article ci-dessous… » et focus dans le champ.

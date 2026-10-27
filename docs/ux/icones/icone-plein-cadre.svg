@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>Ma liste d'épicerie : panier coché (plein cadre)</title>
+  <!-- Source des PNG : apple-touch-icon 180x180 et pwa-maskable-512x512. Aucun coin arrondi, aucune transparence :
+       iOS et Android appliquent leur propre masque. Le motif tient dans le cercle de sécurité (rayon 204 sur 256). -->
+  <rect width="512" height="512" fill="#1B6E3C"/>
+  <g transform="translate(256 256) scale(1.15) translate(-256 -256)">
+    <!-- anse -->
+    <path d="M188 230C188 130 324 130 324 230" fill="none" stroke="#FFFFFF" stroke-width="28" stroke-linecap="round"/>
+    <!-- corps du panier, coins adoucis -->
+    <path d="M132 242H380L346 380H166Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="24" stroke-linejoin="round"/>
+    <!-- coche : la marque du produit (« c'est dans le panier ») -->
+    <path d="M208 308L244 344L306 268" fill="none" stroke="#1B6E3C" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
