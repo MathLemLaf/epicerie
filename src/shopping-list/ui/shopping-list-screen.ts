@@ -4,6 +4,7 @@ import type { ItemId } from "../domain/item";
 import { InvalidItemNameError, normalizeItemName } from "../domain/item-name";
 import type { ShoppingListRepository } from "../domain/shopping-list-repository";
 import { AddItemBar } from "./add-item-bar";
+import { Announcer } from "./announcer";
 import { ItemListView } from "./item-list-view";
 import { texts } from "./texts";
 
@@ -18,12 +19,14 @@ export function mountShoppingListScreen(
   { repository, generateId }: ShoppingListScreenDependencies,
 ): void {
   let list = repository.load();
-  const listView = new ItemListView(toggleItem);
-  const announcer = createAnnouncer();
+  const content = createContent();
+  const listView = new ItemListView(content, toggleItem);
+  content.append(listView.element);
+  const announcer = new Announcer();
   const addItemBar = new AddItemBar(addItem);
 
   root.classList.add("shopping-list-screen");
-  root.replaceChildren(createHeader(), createContent(listView), announcer, addItemBar.element);
+  root.replaceChildren(createHeader(), content, announcer.element, addItemBar.element);
   listView.render(list);
   addItemBar.focusField();
 
@@ -45,7 +48,7 @@ export function mountShoppingListScreen(
     listView.render(list);
     listView.scrollToItem(id);
     addItemBar.clearField();
-    announcer.textContent = texts.itemAdded(name);
+    announcer.announce(texts.itemAdded(name));
   }
 
   function toggleItem(id: ItemId, checked: boolean): void {
@@ -53,7 +56,7 @@ export function mountShoppingListScreen(
     repository.save(list);
     listView.render(list);
     listView.followMovedItem(id);
-    announcer.textContent = toggleAnnouncement(list.get(id).name, checked, list.isAllChecked);
+    announcer.announce(toggleAnnouncement(list.get(id).name, checked, list.isAllChecked));
   }
 }
 
@@ -73,16 +76,8 @@ function createHeader(): HTMLElement {
   return header;
 }
 
-function createContent(listView: ItemListView): HTMLElement {
+function createContent(): HTMLElement {
   const content = document.createElement("main");
   content.className = "app-content";
-  content.append(listView.element);
   return content;
-}
-
-function createAnnouncer(): HTMLParagraphElement {
-  const announcer = document.createElement("p");
-  announcer.className = "visually-hidden";
-  announcer.setAttribute("role", "status");
-  return announcer;
 }

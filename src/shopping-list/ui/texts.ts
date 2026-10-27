@@ -7,11 +7,16 @@ function quoted(text: string): string {
   return `«${NO_BREAK_SPACE}${text}${NO_BREAK_SPACE}»`;
 }
 
+const ALL_TAKEN_HEADLINE = "Tout est dans ton panier !";
+const ALL_TAKEN_DETAIL = "Il ne reste rien à prendre.";
+
 export const texts = {
   appTitle: "Ma liste d'épicerie",
   itemsToBuyHeading: (count: number) => `À prendre (${count})`,
   itemsInBasketHeading: (count: number) => `Dans le panier (${count})`,
-  allTaken: "Tout est dans ton panier ! Il ne reste rien à prendre.",
+  allTakenHeadline: ALL_TAKEN_HEADLINE,
+  allTakenDetail: ALL_TAKEN_DETAIL,
+  allTaken: `${ALL_TAKEN_HEADLINE} ${ALL_TAKEN_DETAIL}`,
   itemMovedToBasket: (name: string) => `${quoted(name)} mis dans le panier.`,
   itemPutBack: (name: string) => `${quoted(name)} remis dans les articles à prendre.`,
   newItemLabel: "Nouvel article",

@@ -22,6 +22,7 @@ beforeEach(() => {
 afterEach(() => {
   root.remove();
   vi.restoreAllMocks();
+  vi.useRealTimers();
 });
 
 function mountScreen(): void {
@@ -343,6 +344,38 @@ function touchRow(name: string): void {
   checkbox(name).click();
 }
 
+function touchRowWithFinger(name: string): void {
+  checkbox(name).dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
+  checkbox(name).click();
+}
+
+function pressSpaceOn(name: string): void {
+  checkbox(name).dispatchEvent(new KeyboardEvent("keydown", { key: " ", bubbles: true }));
+  checkbox(name).click();
+}
+
+function spyOnFocusOptions(): (FocusOptions | undefined)[] {
+  const recordedOptions: (FocusOptions | undefined)[] = [];
+  const realFocus = HTMLElement.prototype.focus;
+  vi.spyOn(HTMLElement.prototype, "focus").mockImplementation(function (
+    this: HTMLElement,
+    options?: FocusOptions,
+  ) {
+    recordedOptions.push(options);
+    realFocus.call(this, options);
+  });
+  return recordedOptions;
+}
+
+const POSITION_BEFORE_TOUCH_PX = 40;
+const POSITION_OF_MOVED_ITEM_PX = 500;
+
+function listScrollContainer(): HTMLElement {
+  const container = root.querySelector("main");
+  if (!container) throw new Error("Zone de liste défilante introuvable");
+  return container;
+}
+
 const ALL_TAKEN_MESSAGE = "Tout est dans ton panier ! Il ne reste rien à prendre.";
 
 function allTakenMessage(): string {
@@ -503,6 +536,81 @@ describe("EPI-002 — Cocher un article mis dans le panier", () => {
 
     expect(checkbox("pain").closest("li")?.classList).toContain("item-row--just-moved");
     expect(checkbox("lait").closest("li")?.classList).not.toContain("item-row--just-moved");
+  });
+
+  it("exigences d'accessibilité : chaque liste garde son rôle de liste (VoiceOver)", () => {
+    givenListState(["pain", false], ["lait", true]);
+    mountScreen();
+
+    const lists = [...root.querySelectorAll("ul.item-list")];
+    expect(lists).toHaveLength(2);
+    expect(lists.map((list) => list.getAttribute("role"))).toEqual(["list", "list"]);
+  });
+
+  it("au toucher, le focus suit l'article sans faire défiler la liste (BUG-003)", () => {
+    givenListState(["pain", false], ["lait", false]);
+    mountScreen();
+    const focusOptions = spyOnFocusOptions();
+
+    touchRowWithFinger("pain");
+
+    expect(document.activeElement).toBe(checkbox("pain"));
+    expect(focusOptions.at(-1)?.preventScroll).toBe(true);
+  });
+
+  it("au toucher, la liste garde sa position même si le navigateur défile vers le focus (BUG-003)", () => {
+    givenListState(["pain", false], ["lait", false]);
+    mountScreen();
+    const scrollingList = listScrollContainer();
+    scrollingList.scrollTop = POSITION_BEFORE_TOUCH_PX;
+    vi.spyOn(HTMLElement.prototype, "focus").mockImplementation(() => {
+      scrollingList.scrollTop = POSITION_OF_MOVED_ITEM_PX;
+    });
+
+    touchRowWithFinger("pain");
+
+    expect(scrollingList.scrollTop).toBe(POSITION_BEFORE_TOUCH_PX);
+  });
+
+  it("au clavier, le focus suit l'article et la liste défile jusqu'à lui (BUG-003)", () => {
+    givenListState(["pain", false], ["lait", false]);
+    mountScreen();
+    touchRowWithFinger("lait");
+    const focusOptions = spyOnFocusOptions();
+
+    pressSpaceOn("pain");
+
+    expect(document.activeElement).toBe(checkbox("pain"));
+    expect(focusOptions).not.toHaveLength(0);
+    expect(focusOptions.at(-1)?.preventScroll).toBeFalsy();
+  });
+
+  it("une annonce identique à la précédente est vidée puis réécrite", () => {
+    vi.useFakeTimers();
+    mountScreen();
+    typeAndTouchAdd("lait");
+    typeAndTouchAdd("lait");
+    typeAndTouchAdd("pain");
+    touchRow("lait");
+
+    touchRow("lait");
+    const announcementRightAfter = announcement();
+    vi.runAllTimers();
+
+    expect(announcementRightAfter).toBe("");
+    expect(announcement()).toBe("« lait » mis dans le panier.");
+  });
+
+  it("une nouvelle annonce n'est pas écrasée par la réécriture d'une annonce identique", () => {
+    vi.useFakeTimers();
+    mountScreen();
+    typeAndTouchAdd("lait");
+    typeAndTouchAdd("lait");
+
+    typeAndTouchAdd("pain");
+    vi.runAllTimers();
+
+    expect(announcement()).toBe("«\u00a0pain\u00a0» ajouté à la liste.");
   });
 
   it("l'ajout d'un article ne ramène pas la marque d'animation", () => {

@@ -218,6 +218,25 @@ test("exigences d'accessibilité : Espace coche, et le focus suit l'article dép
   await expect(checkboxOf(page, "pain")).toBeFocused();
 });
 
+// BUG-003 : au clavier, le focus suit l'article déplacé et la liste défile jusqu'à lui (A3, A8).
+test("exigences d'accessibilité : au clavier, l'article déplacé reste visible", async ({
+  page,
+}) => {
+  const names = Array.from({ length: 25 }, (_, index) => `article ${index + 1}`);
+  await givenItemsToBuy(page, ...names);
+  await page.locator("main").evaluate((list) => {
+    list.scrollTop = 0;
+  });
+  const firstCheckbox = page.getByRole("checkbox", { name: "article 1", exact: true });
+  await firstCheckbox.focus();
+
+  await page.keyboard.press("Space");
+
+  await expect(itemsInBasket(page)).toHaveText(["article 1"]);
+  await expect(firstCheckbox).toBeFocused();
+  await expect(firstCheckbox).toBeInViewport();
+});
+
 test("exigences d'accessibilité : anneau de focus visible sur la ligne au clavier", async ({
   page,
 }) => {
@@ -252,4 +271,59 @@ test("exigences d'accessibilité : animation supprimée avec « réduire les ani
   await touchRow(page, "pain");
 
   await expect(rowOf(page, "pain")).toHaveCSS("animation-name", "none");
+});
+
+// Relecture de l'interface par Jean-François (design-system.md, wireframes.md écran 7).
+const SEPARATOR_COLOR = "rgb(220, 220, 220)";
+const TEXT_COLOR = "rgb(26, 26, 26)";
+const TRANSPARENT = "rgba(0, 0, 0, 0)";
+const SUBPIXEL_ALIGNMENT_TOLERANCE_PX = 1;
+
+test("séparateur visible entre deux lignes cochées (BUG-004)", async ({ page }) => {
+  await givenItemsInBasket(page, "pain", "lait");
+
+  for (const name of ["pain", "lait"]) {
+    await expect(rowOf(page, name)).toHaveCSS("border-bottom-color", SEPARATOR_COLOR);
+    await expect(rowOf(page, name)).not.toHaveCSS("background-color", SEPARATOR_COLOR);
+  }
+});
+
+test("écran tactile : pas de survol collant sur la ligne ni sur « Ajouter »", async ({ page }) => {
+  const hasNoHover = await page.evaluate(() => matchMedia("(hover: none)").matches);
+  test.skip(!hasNoHover, "le projet simule un pointeur qui survole");
+  await givenItemsToBuy(page, "pain");
+
+  await rowOf(page, "pain").locator("label").hover();
+  await expect(rowOf(page, "pain").locator("label")).toHaveCSS("background-color", TRANSPARENT);
+
+  await page.getByRole("button", { name: "Ajouter à la liste" }).hover();
+  await expect(page.getByRole("button", { name: "Ajouter à la liste" })).toHaveCSS(
+    "filter",
+    "none",
+  );
+});
+
+test("tout est pris : une idée forte puis une précision, pastille sur la première ligne", async ({
+  page,
+}) => {
+  await givenItemsInBasket(page, "pain");
+  const headline = page.getByText("Tout est dans ton panier !", { exact: true });
+  const detail = page.getByText("Il ne reste rien à prendre.", { exact: true });
+
+  await expect(allTakenMessage(page)).toBeVisible();
+  await expect(headline).toHaveCSS("font-size", "18px");
+  await expect(headline).toHaveCSS("font-weight", "700");
+  await expect(headline).toHaveCSS("color", TEXT_COLOR);
+  await expect(detail).toHaveCSS("font-size", "16px");
+  await expect(detail).toHaveCSS("font-weight", "400");
+  await expect(detail).toHaveCSS("color", TEXT_COLOR);
+
+  const icon = await page.locator(".all-taken__icon").boundingBox();
+  const headlineBox = await headline.boundingBox();
+  if (!icon || !headlineBox) throw new Error("Message « tout est pris » introuvable");
+  const iconCenter = icon.y + icon.height / 2;
+  const headlineCenter = headlineBox.y + headlineBox.height / 2;
+  expect(Math.abs(iconCenter - headlineCenter)).toBeLessThanOrEqual(
+    SUBPIXEL_ALIGNMENT_TOLERANCE_PX,
+  );
 });

@@ -38,7 +38,7 @@
 }
 
 .item-list li {
-  border-bottom: 1px solid var(--couleur-surface);
+  border-bottom: 1px solid var(--couleur-separateur);
 }
 
 /*
@@ -57,8 +57,11 @@
   cursor: pointer;
 }
 
-.item-row__label:hover {
-  background-color: var(--couleur-surface);
+/* Survol réservé aux pointeurs précis : sur iPhone, un :hover « collant » ressemblerait à une sélection. */
+@media (hover: hover) {
+  .item-row__label:hover {
+    background-color: var(--couleur-surface);
+  }
 }
 
 .item-row__checkbox {
@@ -143,14 +146,29 @@
   }
 }
 
+/* Pastille alignée sur la première ligne : une idée forte (titre), puis une précision. */
 .all-taken {
+  --taille-pastille: 32px;
+
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   margin: 16px 0 0;
+  color: var(--couleur-texte);
+}
+
+.all-taken__headline {
+  display: block;
   font-size: 1.125rem;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: var(--taille-pastille);
+}
+
+.all-taken__detail {
+  display: block;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
 }
 
 .all-taken__icon {
@@ -158,8 +176,8 @@
   flex: none;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: var(--taille-pastille);
+  height: var(--taille-pastille);
   border-radius: 50%;
   background-color: var(--couleur-primaire);
 }
@@ -239,8 +257,10 @@
   cursor: pointer;
 }
 
-.add-item-bar__button:hover {
-  filter: brightness(0.9);
+@media (hover: hover) {
+  .add-item-bar__button:hover {
+    filter: brightness(0.9);
+  }
 }
 
 .add-item-bar__button:active {

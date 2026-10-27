@@ -13,9 +13,20 @@ export type ToggleRequest = (id: ItemId, checked: boolean) => void;
  */
 export class ItemListView {
   readonly element: HTMLElement;
+  private lastInputWasPointer = false;
 
-  constructor(private readonly onToggleRequested: ToggleRequest) {
+  /** `scrollContainer` : la zone qui fait défiler la liste (elle contient `element`). */
+  constructor(
+    private readonly scrollContainer: HTMLElement,
+    private readonly onToggleRequested: ToggleRequest,
+  ) {
     this.element = document.createElement("div");
+    this.element.addEventListener("pointerdown", () => {
+      this.lastInputWasPointer = true;
+    });
+    this.element.addEventListener("keydown", () => {
+      this.lastInputWasPointer = false;
+    });
   }
 
   render(list: ShoppingList): void {
@@ -42,11 +53,32 @@ export class ItemListView {
     this.findRow(id)?.scrollIntoView({ block: "nearest" });
   }
 
-  /** L'article change de section : on le marque pour l'animation et le focus le suit. */
+  /**
+   * L'article change de section : on le marque pour l'animation et le focus le suit.
+   * Au clavier, le navigateur défile jusqu'au focus pour qu'il reste visible (A3, A8).
+   * Au toucher ou à la souris, la liste ne bouge pas : sinon elle sauterait jusqu'à l'article
+   * déplacé et le prochain article à prendre sortirait de l'écran (BUG-003).
+   */
   followMovedItem(id: ItemId): void {
     const row = this.findRow(id);
     row?.classList.add("item-row--just-moved");
-    row?.querySelector("input")?.focus();
+    const checkbox = row?.querySelector("input");
+    if (!checkbox) return;
+    if (this.lastInputWasPointer) {
+      this.focusWithoutScrolling(checkbox);
+    } else {
+      checkbox.focus();
+    }
+  }
+
+  /**
+   * `preventScroll` suffit à Chromium, pas à WebKit, qui défile quand même : on rétablit
+   * la position de défilement mémorisée juste après le focus.
+   */
+  private focusWithoutScrolling(element: HTMLElement): void {
+    const scrollPosition = this.scrollContainer.scrollTop;
+    element.focus({ preventScroll: true });
+    this.scrollContainer.scrollTop = scrollPosition;
   }
 
   private createSection(
@@ -60,6 +92,8 @@ export class ItemListView {
 
     const itemList = document.createElement("ul");
     itemList.className = "item-list";
+    // Safari et VoiceOver retirent le rôle de liste d'un <ul> en list-style: none.
+    itemList.setAttribute("role", "list");
     itemList.setAttribute("aria-labelledby", headingId);
     itemList.append(...items.map((item) => this.createRow(item)));
 
@@ -106,8 +140,20 @@ function createAllTakenMessage(): HTMLElement {
   icon.className = "all-taken__icon";
   icon.setAttribute("aria-hidden", "true");
 
+  const headline = document.createElement("span");
+  headline.className = "all-taken__headline";
+  headline.textContent = texts.allTakenHeadline;
+
+  const detail = document.createElement("span");
+  detail.className = "all-taken__detail";
+  detail.textContent = texts.allTakenDetail;
+
+  const sentences = document.createElement("span");
+  sentences.className = "all-taken__text";
+  sentences.append(headline, " ", detail);
+
   const message = document.createElement("p");
   message.className = "all-taken";
-  message.append(icon, texts.allTaken);
+  message.append(icon, sentences);
   return message;
 }
